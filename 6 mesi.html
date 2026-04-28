@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Per noi</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #d10000;
+  font-family: 'Playfair Display', serif;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* CUORI */
+.hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hearts span {
+  position: absolute;
+  color: #d10000;
+  opacity: 0.18;
+  font-size: 24px;
+}
+
+/* LOGIN */
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  text-align: center;
+}
+
+input, button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #d10000;
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+}
+
+button {
+  background: white;
+  color: #d10000;
+  font-weight: 600;
+}
+
+/* SCHERMATA CONTENUTO */
+.content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  cursor: pointer;
+}
+
+/* TESTO CENTRATURA FORZATA (FIX VERO) */
+.text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 90%;
+  max-width: 700px;
+
+  text-align: center;
+
+  font-size: 26px;
+  line-height: 1.6;
+
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.text.show {
+  opacity: 1;
+}
+
+/* FINALE CENTRATO */
+.final {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 34px;
+
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.final.show {
+  opacity: 1;
+}
+
+.hidden { display: none; }
+
+#error {
+  color: #d10000;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- CUORI -->
+<div class="hearts">
+  <span style="top:10%; left:15%;">♡</span>
+  <span style="top:25%; left:80%;">♡</span>
+  <span style="top:50%; left:40%;">♡</span>
+  <span style="top:70%; left:70%;">♡</span>
+  <span style="top:85%; left:25%;">♡</span>
+</div>
+
+<!-- LOGIN -->
+<div class="login-box" id="login">
+  <h2>Accesso richiesto</h2>
+
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="start()">Entra</button>
+
+  <p id="error">Password sbagliata</p>
+</div>
+
+<!-- CONTENT -->
+<div class="content hidden" id="content">
+  <div id="text" class="text"></div>
+  <div id="final" class="final">Ti amo ❤️‍🩹</div>
+</div>
+
+<script>
+
+const texts = [
+"Ci avresti creduto se ti avessero detto che avremmo fatto 6 mesi insieme?",
+
+"Io avrei risposto: 'Solo sei mesi?'. Perché con una come te puntare al minimo sarebbe stato un peccato.",
+
+"In questi 6 mesi abbiamo fatto un sacco di cose, ma la mia parte preferita rimane sempre la stessa: quando arriva la sera non vedo l'ora di vederti.",
+
+"Quindi preparati... perché ho tutta l'intenzione di continuare a farti ridere (e a romperti le scatole) ancora per un bel po'!",
+
+"E comunque, dopo 6 mesi, continuo a imbambolarmi ogni volta che sorridi, ti metti a ridere per nulla e mi guardi in quel modo"
+];
+
+let i = 0;
+let started = false;
+
+function start() {
+  const valid = ["29/10/2025","29-10-2025","29102025"];
+  const input = document.getElementById("password").value;
+
+  if(!valid.includes(input)) {
+    document.getElementById("error").style.display = "block";
+    return;
+  }
+
+  document.getElementById("login").style.display = "none";
+  document.getElementById("content").classList.remove("hidden");
+
+  started = true;
+  showText();
+}
+
+function showText() {
+  const t = document.getElementById("text");
+
+  t.classList.remove("show");
+
+  setTimeout(() => {
+    t.innerText = texts[i];
+    t.classList.add("show");
+  }, 80);
+}
+
+/* TAP OVUNQUE */
+document.getElementById("content").addEventListener("click", function () {
+  if(!started) return;
+
+  if(i < texts.length - 1) {
+    i++;
+    showText();
+  } else {
+    document.getElementById("text").style.display = "none";
+    document.getElementById("final").classList.add("show");
+    started = false;
+  }
+});
+
+</script>
+
+</body>
+</html>
